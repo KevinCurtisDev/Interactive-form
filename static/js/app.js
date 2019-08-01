@@ -9,31 +9,50 @@ $(document).ready(() => {
     const name = $('#name');
     name.focus();
 
+    //Hide color selection on page load
+    hiddenFormField.addClass('is-hidden')
+
     //check selected job role
     $('#title').change(function () {
         //If other is selected, display idden input field
         if($(this).val() === "other") {
-            hiddenFormField.css('display', 'block')
-            hiddenFormField.focus();
+            hiddenFormField
+            .removeClass('is-hidden')
+            .focus();
         }
     });
 
+    $('#colors-js-puns').addClass('is-hidden')
 
     //Set initial text andvalue T-shirt color to empty
-    $('#first-value').val('');
-    $('#first-value').text('');
+    $('#first-value').val('').text('');
+
+
 
     //check selected color
     $('#design').change(function () {
         if($(this).val() !== "Select Theme") {
-            $('#first-value').text('Cornflower Blue (JS Puns shirt only)');
-            $('#first-value').val('cornflowerblue');
+            // Display color option
+            $('#colors-js-puns').removeClass('is-hidden')
+            $('#first-value')
+            .text('Cornflower Blue (JS Puns shirt only)')
+            .val('cornflowerblue');
         } else {
-            $('#first-value').val('');
-            $('#first-value').text('');
+            $('#first-value')
+            .text('')
+            .val('');
+        }
+        
+        if ($(this).val() === "js puns") {
+            $('.heart').addClass('is-hidden');
+        } else {
+            $('.heart').removeClass('is-hidden');
+            $('.puns').addClass('is-hidden');
         }
     });
 
     
     
 });
+
+// $('#first-value').val('').text('');
