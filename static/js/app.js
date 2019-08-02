@@ -1,17 +1,60 @@
 //JQuery wrapper function
 $(document).ready(() => {
-    //global variables
-    
-    //Reference the first form field and set cursor to focus on it
-    const name = $('#name');
-    name.focus();
 
-    //Hide color selection on page load
+    // Prevent form submit function
+    const preventSubmit = () => {
+        $('button').click((e) => {
+            e.preventDefault();
+        });
+
+        $('form').submit((e) => {
+            e.preventDefault();
+        })
+    }
+
+/******************* EMAIL & NAME VALIDATION ************************/
+    const name = $('#name');
+    const email = $('#mail');
+
+    //Reference the first form field and set cursor to focus on it
+    name.focus()
+        .css('background', 'rgb(247, 247, 73)');
+
+    email.css('background', 'rgb(247, 247, 73)');
+
+
+    $(name).on('input', function() {
+        if($(this).val() !== '') {
+            $(this).css('background', 'white');
+        } else {
+            $(this).css('background', 'rgb(247, 247, 73)');
+        }
+    });
+
+
+    $(email).on('input', function() {
+        if(email.val().indexOf('@') != -1 
+            && email.val().indexOf('.') != -1 
+            && email.val().length > 5 
+            && email.val().length - email.val().indexOf('.') > 2
+            && email.val().indexOf('@') !== 0
+            && email.val().indexOf('.') > email.val().indexOf('@') + 1) {
+
+            $(this).css('background', 'white');
+        } else {
+            $(this).css('background', 'rgb(247, 247, 73)');
+        }
+    });
+/*****************************************************************/
+    
+
+
+    //Hide "other" option on page load
     $("#other-title").addClass('is-hidden')
 
     //check selected job role
     $('#title').change(function () {
-        //If other is selected, display idden input field
+        //If other is selected, display hidden input field
         if($(this).val() === "other") {
             $("#other-title")
             .removeClass('is-hidden')
@@ -60,45 +103,54 @@ $(document).ready(() => {
 
 
 /********************** AVTIVITIES REGISTER ****************************/
-const activities = $('.activities input');
-const activitiesText = $('.activities label');
-price = 0;
-totalList = [];
+    const activities = $('.activities input');
+    const activitiesText = $('.activities label');
+    price = 0;
+    totalList = [];
 
-const tickedBox = (boxName, box1, box2, cost) => {
-    let totalHtml = $(`<div>Total cost: €${price}</div>`)
-    $(activities).change(function () {
-        if(this.checked && this.name === boxName) {
-            $($('.activities .cost')).remove();
-            price += cost;
-            totalHtml = $(`<div class="cost">Total cost: €${price}</div>`)
-            $('.activities').append(totalHtml);
-            $(activities[box1]).prop("disabled", true);
-            $($(activitiesText)[box1]).css("color", "gray");
-            $(activities[box2]).prop("disabled", true);
-            $($(activitiesText)[box2]).css("color", "gray");
-        } else if (!this.checked && this.name === boxName) {
-            $($('.activities .cost')).remove();
-            price -= cost;
-            totalHtml = $(`<div class="cost">Total cost: €${price}</div>`)
-            $('.activities').append(totalHtml);
-            $(activities[box1]).prop("disabled", false);
-            $($(activitiesText)[box1]).css("color", "black");
-            $(activities[box2]).prop("disabled", false);
-            $($(activitiesText)[box2]).css("color", "black");
-        }
-    });
-}
+    const tickedBox = (boxName, box1, box2, cost) => {
+        let totalHtml = $(`<div>Total cost: €${price}</div>`)
+        $(activities).change(function () {
+            if(this.checked && this.name === boxName) {
+                $($('.activities .cost')).remove();
+                price += cost;
+                totalHtml = $(`<div class="cost">Total cost: €${price}</div>`)
+                $('.activities').append(totalHtml);
+                $(activities[box1]).prop("disabled", true);
+                $($(activitiesText)[box1]).css("color", "gray");
+                $(activities[box2]).prop("disabled", true);
+                $($(activitiesText)[box2]).css("color", "gray");
+            } else if (!this.checked && this.name === boxName) {
+                $($('.activities .cost')).remove();
+                price -= cost;
+                totalHtml = $(`<div class="cost">Total cost: €${price}</div>`)
+                $('.activities').append(totalHtml);
+                $(activities[box1]).prop("disabled", false);
+                $($(activitiesText)[box1]).css("color", "black");
+                $(activities[box2]).prop("disabled", false);
+                $($(activitiesText)[box2]).css("color", "black");
+            }
+        });
+    }
 
-tickedBox("all", '', '', 200)
-tickedBox("js-frameworks", 3, 5, 100)
-tickedBox("express", 1, 5, 100)
-tickedBox("build-tools", 1, 3, 100)
-tickedBox("js-libs", 4, 6, 100)
-tickedBox("node", 2, 6, 100)
-tickedBox("npm", 2, 4, 100)
+    tickedBox("all", '', '', 200)
+    tickedBox("js-frameworks", 3, 5, 100)
+    tickedBox("express", 1, 5, 100)
+    tickedBox("build-tools", 1, 3, 100)
+    tickedBox("js-libs", 4, 6, 100)
+    tickedBox("node", 2, 6, 100)
+    tickedBox("npm", 2, 4, 100)
 
-/*************************************************************************/
+/************************************************************************/
+
+
+/************************** PAYMENT INFO LOGIC *************************/
+
+//TODO
+
+/***********************************************************************/
+
+
 
 
 /********************** FORM VALIDATION LOGIC *************************/
@@ -108,5 +160,5 @@ tickedBox("npm", 2, 4, 100)
 
 
 /********************************************************************/
- 
+    
 });
