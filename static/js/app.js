@@ -37,8 +37,7 @@ $(document).ready(() => {
             && email.val().indexOf('.') != -1 
             && email.val().length > 5 
             && email.val().length - email.val().indexOf('.') > 2
-            && email.val().indexOf('@') !== 0
-            && email.val().indexOf('.') > email.val().indexOf('@') + 1) {
+            && email.val().indexOf('@') !== 0) {
 
             $(this).css('background', 'white');
         } else {
@@ -146,7 +145,31 @@ $(document).ready(() => {
 
 /************************** PAYMENT INFO LOGIC *************************/
 
-//TODO
+//Initial state set on credit card selection
+$("#payment").val($("#payment option:eq(1)").val());
+$('#credit-card').siblings('div').addClass('is-hidden');
+
+//Check for options being selected
+$('#payment').change(function () {
+    //Hide paypal and bitcoin options
+    if($(this).val() === "credit card") {
+        $('#credit-card').removeClass('is-hidden')
+        $('#credit-card').siblings('div').addClass('is-hidden');
+    }
+
+    // Hide credit card and bitcoin options
+    if($(this).val() === "paypal") {
+        $('#credit-card').next().removeClass('is-hidden');
+        $('#credit-card').next().siblings('div').addClass('is-hidden');
+    }
+
+    //Hide credit card and paypal options
+    if($(this).val() === "bitcoin") {
+        $('#credit-card').next().next().removeClass('is-hidden');
+        $('#credit-card').next().next().siblings('div').addClass('is-hidden');
+    }
+
+});
 
 /***********************************************************************/
 
