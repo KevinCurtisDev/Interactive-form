@@ -17,14 +17,13 @@ $(document).ready(() => {
     const email = $('#mail');
 
     //Reference the first form field and set cursor to focus on it
-    name.focus()
-        .css('background', 'rgb(247, 247, 73)');
+    name.focus();
 
-    email.css('background', 'rgb(247, 247, 73)');
-
+    const nameRegEx = /^[A-Z]+$/i
+    const emailRegEx = /^[^@]+@[^@.]+\.[a-z]+$/i
 
     $(name).on('input', function() {
-        if($(this).val() !== '') {
+        if($(this).val().length > 1 && nameRegEx.test($(this).val())) {
             $(this).css('background', 'white');
         } else {
             $(this).css('background', 'rgb(247, 247, 73)');
@@ -33,12 +32,8 @@ $(document).ready(() => {
 
 
     $(email).on('input', function() {
-        if(email.val().indexOf('@') != -1 
-            && email.val().indexOf('.') != -1 
-            && email.val().length > 5 
-            && email.val().length - email.val().indexOf('.') > 2
-            && email.val().indexOf('@') !== 0) {
-
+        $(this).css('background', 'rgb(247, 247, 73)');
+        if(emailRegEx.test(email.val())) {
             $(this).css('background', 'white');
         } else {
             $(this).css('background', 'rgb(247, 247, 73)');
@@ -171,6 +166,8 @@ $('#payment').change(function () {
 
 });
 
+
+const cvv = /\d{3}/;
 /***********************************************************************/
 
 
