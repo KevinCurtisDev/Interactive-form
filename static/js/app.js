@@ -166,8 +166,30 @@ $('#payment').change(function () {
 
 });
 
+const zipCodeRegEx = /^\d{5}$/;
+const cardNumberRegEx = /^\d{13,16}$/;
+const cvvRegEx = /^\d{3}$/;
 
-const cvv = /\d{3}/;
+const creditCardNumber = $('#cc-num');
+const zipCodeNumber = $('#zip');
+const cvvNuber = $('#cvv');
+
+
+const inputValidation = (field, reg) => {
+    field.on('input', function(){
+        $(this).css('background', 'rgb(247, 247, 73)');
+        if(reg.test($(this).val())) {
+            $(this).css('background', 'white');
+        } else {
+            $(this).css('background', 'rgb(247, 247, 73)');
+        }
+    });
+};
+
+inputValidation(creditCardNumber, cardNumberRegEx);
+inputValidation(cvvNuber, cvvRegEx);
+inputValidation(zipCodeNumber, zipCodeRegEx);
+
 /***********************************************************************/
 
 
