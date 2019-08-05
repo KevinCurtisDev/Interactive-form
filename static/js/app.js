@@ -27,6 +27,7 @@ $(document).ready(() => {
     // Allow form submission
     const submitForm = () => {
         $('form').unbind('submit');
+        $('form').reset();
     }    
 
     // Prevent form submission
@@ -68,19 +69,11 @@ $(document).ready(() => {
     const checkCardDetailsOnSubmit = (numType, numRegEx, labelDesc, mssg) => {
         if($(numType).val() === ''){
             $(numType).css('background', 'rgb(247, 247, 73)');
-            $(numType).attr('placeholder', 'Enter card number..');
-            dontSubmitForm();
+            $(numType).attr('placeholder', 'Enter number..');
         } else if (!numRegEx.test($(numType).val())) {
             $(numType).after(labelDesc);
             $(numType).css('background', 'rgb(247, 247, 73)');
-            dontSubmitForm();
-        } else if ($(name).val() !== '' 
-                    && emailRegEx.test($(email).val())
-                    && $('#design').val() !== 'Select Theme'
-                    && checkedList.length > 0) {
-            $(mssg).remove();
-            submitForm();
-        }
+        } 
     }
 
     /******************* EMAIL & NAME VALIDATION ************************/
@@ -286,17 +279,18 @@ $(document).ready(() => {
     inputValidation(zipCodeNumber, zipCodeRegEx);
 
 
-    // Final checks before allowing form submission
+/******************************* Final checks *******************************/
+
     $('button').on('click', () => {
         $('#cardNoBad').remove();
         $('#cvvNoBad').remove();
         $('#zipNoBad').remove();
+
         //Check name field
         if($(name).val() === '') {
             $(name).css('background', 'rgb(247, 247, 73)');
             $(name).attr('placeholder', 'This field must be filled..');
             $(window).scrollTop(0);
-            dontSubmitForm();
         }
 
         //Check email field
@@ -304,36 +298,29 @@ $(document).ready(() => {
             $(email).css('background', 'rgb(247, 247, 73)');
             $(email).attr('placeholder', 'Please enter a valid email address..');
             $(window).scrollTop(0);
-            dontSubmitForm();
         }
-        
 
         //Check title field
         if($('#title').val() === 'other' && $("#other-title").val() === '') {
             $("#other-title").css('background', 'rgb(247, 247, 73)');
             $("#other-title").attr('placeholder', 'This field must be filled..');
             $(window).scrollTop(0);
-            dontSubmitForm();
         }
 
         //Check t-shirt option
         if($('#design').val() !== 'Select Theme') {
             $('#shirtBad').remove();
-            submitForm();
         } else {
             $('#shirtBad').remove();
             $('.shirt legend').after('<label id="shirtBad" style="color: red;">*Please select a Tshirt theme</label>');
-            dontSubmitForm();
         }
 
         // Check Activities check boxes 
         if(checkedList.length > 0) {
             $('#activitiesBad').remove();
-            submitForm();
         } else {
             $('#activitiesBad').remove();
             $('.activities legend').after('<label id="activitiesBad" style="color: red;">*Please select an activity</label>');
-            dontSubmitForm();
         }
 
         // Check credit card fields
@@ -341,6 +328,26 @@ $(document).ready(() => {
             checkCardDetailsOnSubmit(creditCardNumber, cardNumberRegEx, '<label id="cardNoBad" style="color: red;">*Enter a valid card number</label>', '#cardNoBad')
             checkCardDetailsOnSubmit(zipCodeNumber, zipCodeRegEx, '<label id="zipNoBad" style="color: red;">*Enter a valid area code</label>', '#zipNoBad')
             checkCardDetailsOnSubmit(cvvNuber, cvvRegEx, '<label id="cvvNoBad" style="color: red;">*Enter a valid cvv</label>', '#cvvNoBad')
+
+            if(checkedList.length > 0 && $('#design').val() !== 'Select Theme' && emailRegEx.test($(email).val()) && $(name).val() !== '' && cardNumberRegEx.test($(creditCardNumber).val()) && zipCodeRegEx.test($(zipCodeNumber).val()) && cvvRegEx.test($(cvvNuber).val())) {
+                if($('#title').val() === 'other' && $("#other-title").val() !== ''){
+                    submitForm();
+                } else if($('#title').val() !== 'other') {
+                    submitForm();
+                }   
+            } else {
+                dontSubmitForm();
+            }
+        } else if($("#payment").val() !== "credit card") {
+            if(checkedList.length > 0 && $('#design').val() !== 'Select Theme' && emailRegEx.test($(email).val()) && $(name).val() !== '' ) {
+                if($('#title').val() === 'other' && $("#other-title").val() !== ''){
+                    submitForm();
+                } else if($('#title').val() !== 'other') {
+                    submitForm();
+                }   
+            } else {
+                dontSubmitForm();
+            }
         } 
     });
 });
