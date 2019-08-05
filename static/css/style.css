@@ -41,7 +41,7 @@ a {
 form {
 	padding: .875em 1.875em 1.875em;
 	background: #9bdcf8;
-	border: 2px solid rgba(8, 63, 87, 0.7);
+	box-shadow: 1px 1px 10px black;
 	border-radius: 4px;
 }
 
@@ -112,12 +112,17 @@ button {
 	background: #083f57;
 	margin: 1.25em 0 .5em;
 	cursor: pointer;
-	border: 2px solid black;
+	border: none;
 	border-radius: 4px;
+	box-shadow: 1px 1px 10px black;
 	transition: all 0.5s;
 }
 
 button:hover {
+	background: #0887bd;
+}
+
+button:active {
 	background: #0887bd;
 	border: 2px solid #f4f6f6;
 }
@@ -148,6 +153,18 @@ option {
 
 .credit-card {
 	margin-top: 1.25em;
+}
+
+#nameTick {
+	width: 20px; 
+	height: auto;
+	margin: -5px 20px 0 0;
+}
+
+.tick {
+	width: 20px; 
+	height: auto;
+	margin: -5px 20px 0 0;
 }
 
 /* ================================= 
