@@ -5,6 +5,7 @@
     const cvvRegEx = /^\d{3}$/;
     const nameRegEx = /^[A-Z]+$/i
     const emailRegEx = /^[^@]+@[^@.]+\.[a-z]+$/i
+    const onlyDigitsRegEx = /^\d+$/;
 
     //Input elements in the dom
     const creditCardNumber = $('#cc-num');
@@ -14,22 +15,24 @@
     const email = $('#mail');
     const activities = $('.activities input');
     const activitiesText = $('.activities label');
+    const form = $('form');
 
     let price = 0;
     const checkedList = [];
 
     /**************************************************************/
 
+    
     /********************* FORM SUBMISSION ***********************/
     // Allow form submission
     const submitForm = () => {
-        $('form').unbind('submit');
-        $('form').reset();
+        form.unbind('submit');
+        form.reset();
     }    
 
     // Prevent form submission
     const dontSubmitForm = () => {
-        $('form').on('submit', (e) => {
+        form.on('submit', (e) => {
             e.preventDefault();
         });
     }
@@ -61,7 +64,8 @@
         });
     };
 
-    //Check name input field
+
+    /************************* Check name input field **********************/
     const nameInputCheck = () => {
         if($('#nameBad')){
             $('#nameBad').remove();
@@ -77,7 +81,45 @@
         }
     }
 
-    //heck design choice selection
+    /************************************************************************/
+
+
+    /****************************** Check title selection *******************/
+
+    const checkOtherSelected = () => {
+        //If other is selected, display hidden input field
+        if($('#title').val() === "other") {
+            $("#other-title")
+            .removeClass('is-hidden')
+            .focus();
+        }
+    }
+
+
+    const titleCheck = () => {
+        if($('#title').val() !== "other") {
+            $('#titleTick').removeClass('is-hidden');
+            $("#other-title").addClass('is-hidden')
+        } else {
+            $('#titleTick').addClass('is-hidden');
+        }
+    }
+
+    const titleFieldIsFilled = () => {
+        if($("#other-title").val().length > 1) {
+            $('#titleTick').removeClass('is-hidden');
+            $("#other-title").css('background', 'white');
+        } else {
+            $('#titleTick').addClass('is-hidden');
+            $("#other-title").css('background', 'rgb(247, 247, 73)');
+        }
+    }
+
+    /************************************************************************/
+
+
+    /**********************check design choice selection***********************/
+
     const designChoiceCheck = () => {
         if($('#design').val() !== "Select Theme" && $('#design').val() !=="heart js") {
             // Display color options
@@ -110,7 +152,12 @@
         }
     }    
 
-    //Credit card checks on form submission
+    /***********************************************************************************/
+
+
+
+    /****************** Credit card checks on form submission **************************/
+
     const checkCardDetailsOnSubmit = (numType, numRegEx, labelDesc, mssg) => {
         if($(numType).val() === ''){
             $(numType).css('background', 'rgb(247, 247, 73)');
@@ -121,7 +168,11 @@
         } 
     }
 
-    // Check events that are ticked and calculate cost
+    /***********************************************************************************/
+
+
+    /***************** Check events that are ticked and calculate cost *****************/ 
+
     const tickedBox = (boxName, box1, cost) => {
         let totalHtml = $(`<div>Total cost: €${price}</div>`)
         $(activities).change(function () {
@@ -149,7 +200,12 @@
         });
     }
 
-    //Display credit conf image or not
+    /************************************************************************************/
+
+
+
+    /************************ Display credit conf image or not ************************/
+
     const cardErrorMessages = () => {
         if(cardNumberRegEx.test($(creditCardNumber).val())
         && cvvRegEx.test($(cvvNuber).val())
@@ -171,10 +227,12 @@
             $('#zipNoBad').remove();
         }
     }
+   
+    /*******************************************************************************/
+
+
+    /*********************** Final form submission checks *************************/
     
-
-
-    //Final form submission checks
     const formSubmitChecks = () => {
         $('#cardNoBad').remove();
         $('#cvvNoBad').remove();
@@ -184,6 +242,7 @@
         if($(name).val() === '') {
             $(name).css('background', 'rgb(247, 247, 73)');
             $(name).attr('placeholder', 'This field must be filled..');
+            $('#nameTick').addClass('is-hidden');
             $(window).scrollTop(0);
         }
 
@@ -191,6 +250,7 @@
         if(!emailRegEx.test($(email).val())) {
             $(email).css('background', 'rgb(247, 247, 73)');
             $(email).attr('placeholder', 'Please enter a valid email address..');
+            $('#emailTick').addClass('is-hidden');
             $(window).scrollTop(0);
         }
 
@@ -252,4 +312,49 @@
             }
         } 
     }
+
+    /***************************************************************************************/
+
+
+    /********************************* credit card functions *******************************/
+
+    //Display different error messages depending on the credit card input state
+    const conditionalCheck = () => {
+        $('.red').remove();
+        if(!onlyDigitsRegEx.test($(creditCardNumber).val())) {
+            $(creditCardNumber).after('<label class="red" style="color: red;">*Enter a valid credit card number</label>')
+        } else {
+            if($(creditCardNumber).val().length < 13) {
+                $(creditCardNumber).after('<label class="red" style="color: red;">*Number must be at least 13 digits</label>')
+            }
+            if($(creditCardNumber).val().length > 16) {
+                $(creditCardNumber).after('<label class="red" style="color: red;">*Number can\'t be more than 16 digits</label>')
+            }
+        }
+    }
+
+    const checkPaymentMethod = () => {
+        //Hide paypal and bitcoin options
+        if($('#payment').val() === "credit card") {
+            $('#credit-card').removeClass('is-hidden')
+            $('#credit-card').siblings('div').addClass('is-hidden');
+            $('#paymentTick').addClass('is-hidden');
+        }
+
+        // Hide credit card and bitcoin options
+        if($('#payment').val() === "paypal") {
+            $('#credit-card').next().removeClass('is-hidden');
+            $('#credit-card').next().siblings('div').addClass('is-hidden');
+            $('#paymentTick').removeClass('is-hidden');
+        }
+
+        //Hide credit card and paypal options
+        if($('#payment').val() === "bitcoin") {
+            $('#credit-card').next().next().removeClass('is-hidden');
+            $('#credit-card').next().next().siblings('div').addClass('is-hidden');
+            $('#paymentTick').removeClass('is-hidden');
+        }
+    }
+
+    /***************************************************************************************/
     
