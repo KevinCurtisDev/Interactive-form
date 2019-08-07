@@ -10,6 +10,12 @@ The idea of this project is to perform custom form validation on varius form inp
 
 The form include validation for text input and numeric input using regex. Check box inputs are validated with conditional logic. Validation messages are shown conditionally depending on the validation error, and unfilled fields are highlighted when there is an attempt to submit an incomplete form. As longas validation checks are not passed the form is prevented from being submitted. The form is fully functional when JavaScript is disabled, allowing for unobstrusive JavaScript and progressive enhancement.
 
+## Deployment
+
+The form app is deployed to gihub pages and can be viewed here: [Form app](https://kevincurtisdev.github.io/Interactive-form/)]
+
+To run the site on your localhost, first clone or download the repo.CD into the root directory and run a simple http server with whichever language you have running on your machine. Alternatively, install the live server extension from vs code. Open the project in vs code, navigate to the index.html page. Right click anywhere on that page and select run server in order to preview the site in your browser.
+
 ## Code sample
 
 ```JavaScript
